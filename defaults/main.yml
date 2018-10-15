@@ -1,0 +1,18 @@
+flush_all: false
+delete_data: false
+
+ksm_host_memory: 128m
+ksm_host_endpoint_port: 50051
+ksm_host_gateway_port: 50052
+ksm_host_config_dir: /etc/kafka-security-manager
+ksm_host_source_file: "{{ ksm_host_config_dir }}/acls.csv"
+
+ksm_service_name: kafka-security-manager
+ksm_docker_image: simplesteph/kafka-security-manager:latest
+ksm_zookeeper_connect: localhost:2181
+ksm_source_class: com.github.simplesteph.ksm.source.FileSourceAcl
+
+ksm_acls_csv_body: |
+  User:*,Topic,LITERAL,*,All,Allow,*
+  User:*,Group,LITERAL,*,All,Allow,*
+  User:*,Cluster,LITERAL,*,All,Allow,*

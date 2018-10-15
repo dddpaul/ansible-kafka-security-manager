@@ -1,0 +1,22 @@
+[Unit]
+Description=Kafka Security Manager service
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker run --rm \
+  --name {{ ksm_service_name }} \
+  -p {{ ksm_host_endpoint_port }}:50051 \
+  -p {{ ksm_host_gateway_port }}:50052 \
+  -m {{ ksm_host_memory }} \
+  -v {{ ksm_host_source_file }}:/opt/docker/example/acls.csv \
+  -e KSM_READONLY=false \
+  -e AUTHORIZER_ZOOKEEPER_CONNECT={{ ksm_zookeeper_connect }} \
+  -e SOURCE_CLASS={{ ksm_source_class }} \
+  -e SOURCE_FILE_FILENAME=/opt/docker/example/acls.csv \
+  {{ ksm_docker_image }}
+ExecStop=/usr/bin/docker stop -t 10 {{ ksm_service_name }}
+
+[Install]
+WantedBy=default.target

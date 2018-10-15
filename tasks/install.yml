@@ -1,0 +1,24 @@
+---
+- name: has {{ ksm_service_name }} config directory
+  become: true
+  file:
+    path: "{{ ksm_host_config_dir }}"
+    state: "directory"
+    mode: "0775"
+
+- name: has {{ ksm_service_name }} configuration on host
+  become: true
+  template:
+    src: acls.csv.j2
+    dest: "{{ ksm_host_source_file }}"
+    mode: "0664"
+    backup: yes
+  notify: ksm restart
+
+- name: has {{ ksm_service_name }} service config on host
+  become: true
+  template:
+    src: kafka-security-manager.service.j2
+    dest: "/etc/systemd/system/{{ ksm_service_name }}.service"
+    backup: yes
+  notify: ksm restart
