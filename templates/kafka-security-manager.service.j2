@@ -11,6 +11,7 @@ ExecStart=/usr/bin/docker run --rm \
   -p {{ ksm_host_gateway_port }}:50052 \
   -m {{ ksm_host_memory }} \
   -v {{ ksm_host_source_file }}:/opt/docker/example/acls.csv \
+  -v /etc/hosts:/etc/hosts \
   -e KSM_READONLY=false \
   -e AUTHORIZER_ZOOKEEPER_CONNECT={{ ksm_zookeeper_connect }} \
   -e SOURCE_CLASS={{ ksm_source_class }} \
